@@ -14,5 +14,7 @@ Page {
         anchors.centerIn: parent
 
         radius: 20
+
+
     }
 }
