@@ -7,13 +7,14 @@ Rectangle {
     property alias buttonText: button.text
     property alias buttonColorText: button.color
     property alias buttonColorBord: root.border
+    property alias buttonWidth: root.width
+    property alias buttonHeight: root.height
     signal clicked()
 
     width: 60
     height: 30
     radius: 20
     color: "white"
-    // border.color: "#faacac"
 
     Rectangle {
         id: backgroundRect

@@ -10,198 +10,299 @@ Window {
     visible: true
     title: qsTr("mail")
 
-    Rectangle {
-        id: backgroundrec
+    StackView {
+        id: view
         anchors.fill: parent
+        initialItem: authWin
+    }
 
-        gradient: Gradient {
-            GradientStop { position: 0.0; color: "lightblue" }
-            GradientStop { position: 1.0; color: "#faacac" }
-        }
+    Page {
+        id: authWin
 
         Rectangle {
-            id: logWin
+            id: backgroundAuth
+            anchors.fill: parent
 
-            height: 300
-            width: 400
-            radius: 20
-
-            anchors.centerIn: parent
-
-            Item {
-                id: spaceItem
-                anchors.horizontalCenter: parent.horizontalCenter
-                height: 30
-            }
-
-            Text {
-                id: titleWelcome
-                text: "Sign in"
-                font.bold: true
-
-                font.pointSize: 20
-
-                color: "lightblue"
-
-                anchors.horizontalCenter: spaceItem.horizontalCenter
-                anchors.top: spaceItem.bottom
-            }
-
-            Item {
-                id: spaceItem2
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.top: titleWelcome.bottom
-                height: 40
+            gradient: Gradient {
+                GradientStop { position: 0.0; color: "lightblue" }
+                GradientStop { position: 1.0; color: "#faacac" }
             }
 
             Rectangle {
-                id: fieldUsername
+                id: logWin
 
-                width: 250
-                height: 30
+                height: 300
+                width: 400
                 radius: 20
 
-                anchors.top: spaceItem2.bottom
-                anchors.horizontalCenter: titleWelcome.horizontalCenter
+                anchors.centerIn: parent
 
-                border.color: "lightblue"
-                color: "white"
+                Item {
+                    id: spaceItem1
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    height: 30
+                }
 
-                TextField {
-                    id: textFieldUsername
+                Text {
+                    id: titleWelcome
+                    text: "Sign in"
+                    font.bold: true
 
-                    placeholderText: "Email"
+                    font.pointSize: 20
 
-                    anchors {
-                        fill: parent
-                        left: parent.left
-                        verticalCenter: parent.verticalCenter
-                        leftMargin: 5
+                    color: "lightblue"
+
+                    anchors.horizontalCenter: spaceItem1.horizontalCenter
+                    anchors.top: spaceItem1.bottom
+                }
+
+                Item {
+                    id: spaceItem2
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.top: titleWelcome.bottom
+                    height: 40
+                }
+
+                Rectangle {
+                    id: fieldUsername
+
+                    width: 250
+                    height: 30
+                    radius: 20
+
+                    anchors.top: spaceItem2.bottom
+                    anchors.horizontalCenter: titleWelcome.horizontalCenter
+
+                    border.color: "lightblue"
+                    color: "white"
+
+                    TextField {
+                        id: textFieldUsername
+
+                        placeholderText: "Email"
+
+                        anchors {
+                            fill: parent
+                            left: parent.left
+                            verticalCenter: parent.verticalCenter
+                            leftMargin: 5
+                        }
+
+                        width: parent.width
+                        height: parent.height
+
+                        selectByMouse: true
+
+                        verticalAlignment: Text.AlignVCenter
+
+                        background: Rectangle {
+                            color: "transparent"
+                            radius: 20
+                        }
                     }
+                }
 
-                    width: parent.width
-                    height: parent.height
+                Item {
+                    id: spaceItem3
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.top: fieldUsername.bottom
+                    height: 10
+                }
 
-                    selectByMouse: true
+                Rectangle {
+                    id: fieldPassword
+                    width: 250
+                    height: 30
+                    radius: 20
 
-                    verticalAlignment: Text.AlignVCenter
+                    anchors.top: spaceItem3.bottom
+                    anchors.horizontalCenter: titleWelcome.horizontalCenter
 
-                    background: Rectangle {
-                        color: "transparent"
-                        radius: 20
+                    border.color: "#faacac"
+                    color: "white"
+
+                    TextField {
+                        id: textFieldPassword
+
+                        placeholderText: "Password"
+
+                        anchors {
+                            fill: parent
+                            left: parent.left
+                            verticalCenter: parent.verticalCenter
+                            leftMargin: 5
+                        }
+
+                        width: parent.width
+                        height: parent.height
+
+                        selectByMouse: true
+
+                        verticalAlignment: Text.AlignVCenter
+
+                        background: Rectangle {
+                            color: "transparent"
+                            radius: 20
+                        }
+                    }
+                }
+
+                Item {
+                    id: spaceItem4
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.top: fieldPassword.bottom
+                    height: 15
+                }
+
+                Item {
+                    id: spaceItem5
+                    anchors.right: fieldPassword.right
+                    anchors.top: spaceItem4.bottom
+                    height: 15
+                    width: 40
+                }
+
+                CustomButton {
+                    id: customEnter
+                    anchors.right: spaceItem5.left
+                    anchors.top: spaceItem4.bottom
+                    buttonText: "Log in"
+                    buttonColorText: "grey"
+                    buttonColorBord.color: "lightblue"
+                    onClicked: {
+                        view.push()
+                    }
+                }
+
+                Item {
+                    id: spaceItem6
+                    anchors.left: fieldPassword.left
+                    anchors.top: spaceItem4.bottom
+                    height: 15
+                    width: 40
+                }
+
+                CustomButton {
+                    id: customReg
+                    anchors.left: spaceItem6.right
+                    anchors.top: spaceItem4.bottom
+                    buttonText: "Reg"
+                    buttonColorText: "grey"
+                    buttonColorBord.color: "lightblue"
+                    onClicked: {
+                        view.push()
+                    }
+                }
+
+                Item {
+                    id: spaceItem7
+                    anchors.left: parent.left
+                    anchors.bottom: parent.bottom
+                    height: 10
+                    width: 10
+                }
+
+                CustomButton {
+                    id: customRef
+                    anchors.left: spaceItem7.right
+                    anchors.bottom: spaceItem7.top
+                    buttonText: "Ref"
+                    buttonColorText: "grey"
+                    buttonColorBord.color: "#faacac"
+                    onClicked: {
+                        view.push(refWin)
                     }
                 }
             }
+        }
+    }
 
-            Item {
-                id: spaceItem3
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.top: fieldUsername.bottom
-                height: 10
+    Page {
+        id: refWin
+
+        visible: false
+
+        Rectangle {
+            id: refBack
+            anchors.fill: parent
+
+            gradient: Gradient {
+                GradientStop { position: 0.0; color: "lightblue" }
+                GradientStop { position: 1.0; color: "#faacac" }
             }
 
             Rectangle {
-                id: fieldPassword
-                width: 250
-                height: 30
+                id: refWinback
+
+                height: 300
+                width: 400
                 radius: 20
-
-                anchors.top: spaceItem3.bottom
-                anchors.horizontalCenter: titleWelcome.horizontalCenter
-
-                border.color: "#faacac"
                 color: "white"
 
-                TextField {
-                    id: textFieldPassword
+                anchors.centerIn: parent
 
-                    placeholderText: "Password"
 
-                    anchors {
-                        fill: parent
-                        left: parent.left
-                        verticalCenter: parent.verticalCenter
-                        leftMargin: 5
+
+                Text {
+                    id: waterM
+                    anchors.centerIn: parent
+
+                    text: "Приложение сделано Хабибуллиным Русланом"
+
+                    color: "grey"
+                }
+
+                Item {
+                    id: spaceItem8
+
+                    width: 5
+                    height: 5
+                }
+
+                Button {
+                    anchors.left: spaceItem8.right
+                    anchors.top: spaceItem8.bottom
+                    background: null
+                    width: 35
+                    height: 35
+
+                    MouseArea {
+                        anchors.fill: parent
+
+                        Text {
+                            id: backW
+                            anchors.centerIn: parent
+                            font.pointSize: 20
+                            text: "<"
+                            color: "grey"
+                        }
+
+                        onClicked: {
+                            view.pop()
+                        }
                     }
+                }
 
-                    width: parent.width
-                    height: parent.height
+                Button {
+                    anchors.horizontalCenter: waterM.horizontalCenter
+                    anchors.top: waterM.bottom
+                    background: null
+                    width: pathW.width
 
-                    selectByMouse: true
+                    MouseArea {
+                        anchors.fill: parent
 
-                    verticalAlignment: Text.AlignVCenter
+                        Text {
+                            id: pathW
+                            anchors.centerIn: parent
+                            text: "https://github.com/Oceanic-Oracle"
+                            color: "lightblue"
+                        }
 
-                    background: Rectangle {
-                        color: "transparent"
-                        radius: 20
+                        onClicked: {
+                            Qt.openUrlExternally("https://github.com/Oceanic-Oracle")
+                        }
                     }
-                }
-            }
-
-            Item {
-                id: spaceItem4
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.top: fieldPassword.bottom
-                height: 15
-            }
-
-            Item {
-                id: spaceItem5
-                anchors.right: fieldPassword.right
-                anchors.top: spaceItem4.bottom
-                height: 15
-                width: 40
-            }
-
-            CustomButton {
-                id: customEnter
-                anchors.right: spaceItem5.left
-                anchors.top: spaceItem4.bottom
-                buttonText: "Log in"
-                buttonColorText: "grey"
-                buttonColorBord.color: "lightblue"
-                onClicked: {
-                    view.push()
-                }
-            }
-
-            Item {
-                id: spaceItem6
-                anchors.left: fieldPassword.left
-                anchors.top: spaceItem4.bottom
-                height: 15
-                width: 40
-            }
-
-            CustomButton {
-                id: customReg
-                anchors.left: spaceItem6.right
-                anchors.top: spaceItem4.bottom
-                buttonText: "Reg"
-                buttonColorText: "grey"
-                buttonColorBord.color: "lightblue"
-                onClicked: {
-                    view.push()
-                }
-            }
-
-            Item {
-                id: spaceItem7
-                anchors.left: parent.left
-                anchors.bottom: parent.bottom
-                height: 10
-                width: 10
-            }
-
-            CustomButton {
-                id: customRef
-                anchors.left: spaceItem7.right
-                anchors.bottom: spaceItem7.top
-                buttonText: "Ref"
-                buttonColorText: "grey"
-                buttonColorBord.color: "#faacac"
-                onClicked: {
-                    view.push()
                 }
             }
         }
