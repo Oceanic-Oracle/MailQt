@@ -738,6 +738,7 @@ Window {
                                 }
 
                                 onClicked: {
+                                    writeMess.visible = false
                                     winMessage.visible = true
                                     textFrom.text = incomingusernameText.text
                                     textTheme.text = incomingthemeText.text
@@ -851,6 +852,7 @@ Window {
                                 }
 
                                 onClicked: {
+                                    writeMess.visible = false
                                     winMessage.visible = true
                                     textFrom.text = outgoingusernameText.text
                                     textTheme.text = outgoingthemeText.text
@@ -967,6 +969,73 @@ Window {
                             anchors.topMargin: 10
                         }
                     }
+
+                    Item {
+                        id: writeMess
+                        visible: false
+                        anchors.fill: parent
+
+                        Text {
+                            id: fromWrite
+
+                            text: "From: "
+                            anchors.top: parent.top
+                            anchors.left: parent.left
+                            anchors.leftMargin: 20
+                            anchors.topMargin: 20
+                        }
+
+                        TextField {
+                            id: fromWriteText
+
+                            anchors.left: fromWrite.right
+                            anchors.top: fromWrite.top
+                            anchors.leftMargin: 10
+                        }
+
+                        Text {
+                            id: themeWrite
+
+                            text: "Theme: "
+                            anchors.top: fromWrite.bottom
+                            anchors.left: fromWrite.left
+                            anchors.topMargin: 20
+                        }
+
+                        TextField {
+                            id: themeWriteText
+
+                            anchors.left: themeWrite.right
+                            anchors.top: themeWrite.top
+                            anchors.leftMargin: 2
+                        }
+
+                        Rectangle {
+                            id: lineWrite
+
+                            color: "lightgrey"
+                            width: parent.width - 0.1 * parent.width
+                            height: 1
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            anchors.top: themeWrite.bottom
+                            anchors.topMargin: 15
+                        }
+
+                        TextField {
+                            id: messWriteText
+
+                            anchors.top: lineWrite.bottom
+                            anchors.left: themeWrite.left
+                            anchors.right: writeMess.right
+                            anchors.bottom: writeMess.bottom
+                            anchors.topMargin: 10
+                            anchors.rightMargin: 20
+                            anchors.bottomMargin: 20
+
+                            inputMethodHints: Qt.ImhMultiLine
+                            wrapMode: Text.WrapAnywhere
+                        }
+                    }
                 }
 
                 Rectangle {
@@ -1008,10 +1077,15 @@ Window {
                         }
 
                         CustomButton {
-                            buttonText: "Send"
+                            buttonText: "Write"
                             buttonColorBord.color: "lightblue"
                             buttonColorText: "grey"
                             Layout.alignment: Qt.AlignHCenter
+
+                            onClicked: {
+                                winMessage.visible = false
+                                writeMess.visible = true
+                            }
                         }
                     }
                 }
