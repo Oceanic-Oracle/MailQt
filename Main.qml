@@ -230,8 +230,36 @@ Window {
                     buttonColorText: "grey"
                     buttonColorBord.color: "lightblue"
                     onClicked: {
-                        view.push(mainPage)
+                        if (!status)
+                        {
+                            client.connectToServer("127.0.0.1", 1234)
+                        }
+                        client.logIn(textFieldUsername.text, textFieldPassword.text)
+
+                        if(enter === "success")
+                        {
+                            view.push(mainPage);
+                            errorEnter.visible = false;
+                        }
+                        else
+                        {
+                            errorEnter.visible = true;
+                            errorEnter.text = enter;
+                        }
                     }
+                }
+
+                Text {
+                    id: errorEnter
+
+                    font.pointSize: 10
+                    font.bold: true
+                    color: "#faacac"
+                    visible: false
+
+                    anchors.top: customEnter.bottom
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.topMargin: 10
                 }
 
                 Item {
@@ -254,21 +282,26 @@ Window {
                     buttonColorBord.color: "lightblue"
 
                     onClicked: {
-                        logWin.height += 20
+                        client.connectToServer("127.0.0.1", 1234);
+                        client.registration(textFieldUsername.text, textFieldPassword.text);
 
-                        customReg.visible = false
-                        customEnter.visible = false
-                        customRef.visible = false
+                        logWin.height += 20;
 
-                        customCont.visible = true
-                        backRefw.visible = true
-                        fieldPasswordRep.visible = true
-                        lineRec.visible = true
-                        errorNotification.visible = true
+                        customReg.visible = false;
+                        customEnter.visible = false;
+                        customRef.visible = false;
 
-                        spaceItem3.height = 11
-                        fieldPassword.anchors.top = spaceItemLine.bottom
-                        titleWelcome.text = "Sign up"
+                        customCont.visible = true;
+                        backRefw.visible = true;
+                        fieldPasswordRep.visible = true;
+                        lineRec.visible = true;
+                        errorNotification.visible = true;
+
+                        spaceItem3.height = 11;
+                        fieldPassword.anchors.top = spaceItemLine.bottom;
+                        titleWelcome.text = "Sign up";
+
+                        errorEnter.visible = false;
                     }
                 }
 
@@ -325,43 +358,48 @@ Window {
                                     textFieldPasswordRep.text !== "" && textFieldPassword.text.length >= 6 &&
                                     textFieldPassword.text.length >= 6) {
 
-                                logWin.height -= 20
+                                if (!status)
+                                {
+                                    client.connectToServer("127.0.0.1", 1234);
+                                }
 
-                                customReg.visible = true
-                                customEnter.visible = true
-                                customRef.visible = true
+                                logWin.height -= 20;
 
-                                customCont.visible = false
-                                backRefw.visible = false
-                                fieldPasswordRep.visible = false
-                                lineRec.visible = false
-                                errorNotification.visible = false
+                                customReg.visible = true;
+                                customEnter.visible = true;
+                                customRef.visible = true;
 
-                                spaceItem3.height = 10
-                                fieldPassword.anchors.top = spaceItem3.bottom
-                                titleWelcome.text = "Sign in"
+                                customCont.visible = false;
+                                backRefw.visible = false;
+                                fieldPasswordRep.visible = false;
+                                lineRec.visible = false;
+                                errorNotification.visible = false;
 
-                                textFieldPassword.text = ""
-                                textFieldPasswordRep.text = ""
-                                errorNotification.text = ""
+                                spaceItem3.height = 10;
+                                fieldPassword.anchors.top = spaceItem3.bottom;
+                                titleWelcome.text = "Sign in";
+
+                                textFieldPassword.text = "";
+                                textFieldPasswordRep.text = "";
+                                errorNotification.text = "";
                             }
 
                             else if (textFieldPassword.text === textFieldPasswordRep.text && textFieldPassword.text !== "" &&
                                      textFieldPasswordRep.text !== "") {
-                                errorNotification.text = "Password must contain at least 6 characters"
+                                errorNotification.text = "Password must contain at least 6 characters";
                             }
 
                             else if (textFieldPassword.text !== textFieldPasswordRep.text && textFieldPassword.text !== "" &&
                                      textFieldPasswordRep.text !== "") {
-                                errorNotification.text = "Password mismatch"
+                                errorNotification.text = "Password mismatch";
                             }
 
                             else {
-                                errorNotification.text = "Enter password"
+                                errorNotification.text = "Enter password";
                             }
                         }
                         else {
-                            errorNotification.text = "Enter username"
+                            errorNotification.text = "Enter username";
                         }
                     }
                 }
@@ -976,9 +1014,9 @@ Window {
                         anchors.fill: parent
 
                         Text {
-                            id: fromWrite
+                            id: toWrite
 
-                            text: "From: "
+                            text: "To: "
                             anchors.top: parent.top
                             anchors.left: parent.left
                             anchors.leftMargin: 20
@@ -986,10 +1024,10 @@ Window {
                         }
 
                         TextField {
-                            id: fromWriteText
+                            id: toWriteText
 
-                            anchors.left: fromWrite.right
-                            anchors.top: fromWrite.top
+                            anchors.left: toWrite.right
+                            anchors.top: toWrite.top
                             anchors.leftMargin: 10
                         }
 
@@ -997,8 +1035,8 @@ Window {
                             id: themeWrite
 
                             text: "Theme: "
-                            anchors.top: fromWrite.bottom
-                            anchors.left: fromWrite.left
+                            anchors.top: toWrite.bottom
+                            anchors.left: toWrite.left
                             anchors.topMargin: 20
                         }
 
@@ -1027,13 +1065,57 @@ Window {
                             anchors.top: lineWrite.bottom
                             anchors.left: themeWrite.left
                             anchors.right: writeMess.right
-                            anchors.bottom: writeMess.bottom
+                            anchors.bottom: sendButt.top
                             anchors.topMargin: 10
                             anchors.rightMargin: 20
                             anchors.bottomMargin: 20
 
                             inputMethodHints: Qt.ImhMultiLine
                             wrapMode: Text.WrapAnywhere
+                        }
+
+                        CustomButton {
+                            id: sendButt
+                            buttonText: "Send"
+                            buttonColorBord.color: "lightblue"
+                            buttonColorText: "grey"
+
+                            anchors.bottom: writeMess.bottom
+                            anchors.right: writeMess.right
+                            anchors.rightMargin: 10
+                            anchors.bottomMargin: 10
+
+                            onClicked: {
+                                if (toWriteText.text !== "" && themeWriteText.text !== "" && messWriteText.text !== "")
+                                {
+                                    client.sendMessage(textFieldUsername.text, toWriteText.text, themeWriteText.text, messWriteText.text);
+                                    errorWrite.visible = false;
+                                    toWriteText.clear();
+                                    themeWriteText.clear();
+                                    messWriteText.clear();
+                                }
+                                else
+                                {
+                                    errorWrite.visible = true;
+                                }
+                            }
+                        }
+
+                        Text {
+                            id: errorWrite
+
+                            visible: false
+
+                            text: "Fill in all the fields"
+
+                            color: "#faacac"
+
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            anchors.top: messWriteText.bottom
+                            anchors.topMargin: 12
+
+                            font.pointSize: 13
+                            font.bold: true
                         }
                     }
                 }
@@ -1065,6 +1147,7 @@ Window {
                             Layout.alignment: Qt.AlignHCenter
 
                             onClicked: {
+                                client.disconnectFromServer();
                                 view.pop();
                             }
                         }
