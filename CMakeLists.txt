@@ -19,6 +19,8 @@ qt_add_qml_module(appmailQt
     QML_FILES CustomButton.qml
     SOURCES client.h
     SOURCES client.cpp
+    SOURCES
+    SOURCES
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

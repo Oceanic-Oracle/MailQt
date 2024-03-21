@@ -230,21 +230,22 @@ Window {
                     buttonColorText: "grey"
                     buttonColorBord.color: "lightblue"
                     onClicked: {
-                        if (!status)
+                        if (textFieldUsername.text !== "" && textFieldPassword.text !== "")
                         {
-                            client.connectToServer("127.0.0.1", 1234)
-                        }
-                        client.logIn(textFieldUsername.text, textFieldPassword.text)
-
-                        if(enter === "success")
-                        {
-                            view.push(mainPage);
-                            errorEnter.visible = false;
+                            if (status)
+                            {
+                                client.logIn(textFieldUsername.text, textFieldPassword.text);
+                            }
+                            else
+                            {
+                                errorEnter.visible = true;
+                                errorEnter.text = "Connection error";
+                            }
                         }
                         else
                         {
                             errorEnter.visible = true;
-                            errorEnter.text = enter;
+                            errorEnter.text = "Enter login and password";
                         }
                     }
                 }
@@ -260,6 +261,18 @@ Window {
                     anchors.top: customEnter.bottom
                     anchors.horizontalCenter: parent.horizontalCenter
                     anchors.topMargin: 10
+                }
+
+                Connections {
+                    target: client
+                    onLoginSuccess: {
+                        view.push(mainPage);
+                        errorEnter.visible = false;
+                    }
+                    onLoginError: {
+                        errorEnter.visible = true;
+                        errorEnter.text = enter;
+                    }
                 }
 
                 Item {
@@ -282,9 +295,6 @@ Window {
                     buttonColorBord.color: "lightblue"
 
                     onClicked: {
-                        client.connectToServer("127.0.0.1", 1234);
-                        client.registration(textFieldUsername.text, textFieldPassword.text);
-
                         logWin.height += 20;
 
                         customReg.visible = false;
@@ -353,54 +363,73 @@ Window {
                     buttonColorBord.color: "lightblue"
 
                     onClicked: {
-                        if (textFieldUsername.text !== "") {
-                            if (textFieldPassword.text === textFieldPasswordRep.text && textFieldPassword.text !== "" &&
-                                    textFieldPasswordRep.text !== "" && textFieldPassword.text.length >= 6 &&
-                                    textFieldPassword.text.length >= 6) {
-
-                                if (!status)
+                        if (client.get_connectStatus())
+                        {
+                            if (textFieldUsername.text !== "")
+                            {
+                                if (textFieldPassword.text === textFieldPasswordRep.text && textFieldPassword.text !== "" &&
+                                        textFieldPasswordRep.text !== "" && textFieldPassword.text.length >= 6 &&
+                                        textFieldPassword.text.length >= 6)
                                 {
-                                    client.connectToServer("127.0.0.1", 1234);
+                                    client.registration(textFieldUsername.text, textFieldPassword.text);
                                 }
 
-                                logWin.height -= 20;
+                                else if (textFieldPassword.text === textFieldPasswordRep.text && textFieldPassword.text !== "" &&
+                                         textFieldPasswordRep.text !== "")
+                                {
+                                    errorNotification.text = "Password must contain at least 6 characters";
+                                }
 
-                                customReg.visible = true;
-                                customEnter.visible = true;
-                                customRef.visible = true;
+                                else if (textFieldPassword.text !== textFieldPasswordRep.text && textFieldPassword.text !== "" &&
+                                         textFieldPasswordRep.text !== "")
+                                {
+                                    errorNotification.text = "Password mismatch";
+                                }
 
-                                customCont.visible = false;
-                                backRefw.visible = false;
-                                fieldPasswordRep.visible = false;
-                                lineRec.visible = false;
-                                errorNotification.visible = false;
-
-                                spaceItem3.height = 10;
-                                fieldPassword.anchors.top = spaceItem3.bottom;
-                                titleWelcome.text = "Sign in";
-
-                                textFieldPassword.text = "";
-                                textFieldPasswordRep.text = "";
-                                errorNotification.text = "";
+                                else
+                                {
+                                    errorNotification.text = "Enter password";
+                                }
                             }
-
-                            else if (textFieldPassword.text === textFieldPasswordRep.text && textFieldPassword.text !== "" &&
-                                     textFieldPasswordRep.text !== "") {
-                                errorNotification.text = "Password must contain at least 6 characters";
-                            }
-
-                            else if (textFieldPassword.text !== textFieldPasswordRep.text && textFieldPassword.text !== "" &&
-                                     textFieldPasswordRep.text !== "") {
-                                errorNotification.text = "Password mismatch";
-                            }
-
-                            else {
-                                errorNotification.text = "Enter password";
+                            else
+                            {
+                                errorNotification.text = "Enter username";
                             }
                         }
-                        else {
-                            errorNotification.text = "Enter username";
+                        else
+                        {
+                            errorNotification.text = "";
                         }
+                    }
+                }
+
+                Connections {
+                    target: client
+                    onRegistrationSuccess: {
+                        logWin.height -= 20;
+
+                        customReg.visible = true;
+                        customEnter.visible = true;
+                        customRef.visible = true;
+
+                        customCont.visible = false;
+                        backRefw.visible = false;
+                        fieldPasswordRep.visible = false;
+                        lineRec.visible = false;
+                        errorNotification.visible = false;
+
+                        spaceItem3.height = 10;
+                        fieldPassword.anchors.top = spaceItem3.bottom;
+                        titleWelcome.text = "Sign in";
+
+                        textFieldPassword.text = "";
+                        textFieldPasswordRep.text = "";
+                        errorNotification.text = "";
+                        errorNotification.visible = false;
+                    }
+                    onRegistrationError: {
+                        errorNotification.visible = true;
+                        errorNotification.text = registr;
                     }
                 }
 
@@ -796,19 +825,18 @@ Window {
                             incomingmessage: "Hello, bfg"
                             incomingdata: "22.07.12 20:21"
                         }
+                    }
 
-                        ListElement {
-                            incomingusername: "User1"
-                            incomingtheme: "sidneyadjvsdsdvsdv"
-                            incomingmessage: "Hello, jfnbdfbdfbdfbdfb"
-                            incomingdata: "22.07.12 20:21"
-                        }
+                    Connections {
+                        target: client
 
-                        ListElement {
-                            incomingusername: "User1"
-                            incomingtheme: "gfbfgbfgbfg"
-                            incomingmessage: "Hello, bfg"
-                            incomingdata: "22.07.12 20:21"
+                        onIncomingMessageReceived: {
+                            incominglistModel.append({
+                                incomingusername: sender,
+                                incomingtheme: theme,
+                                incomingmessage: message,
+                                incomingdata: data
+                            });
                         }
                     }
 
@@ -910,19 +938,18 @@ Window {
                             outgoingmessage: "Hello, dfgbgbdf"
                             outgoingdata: "22.07.12 20:21"
                         }
+                    }
 
-                        ListElement {
-                            outgoingusername: "Me"
-                            outgoingtheme: "fgbfgb"
-                            outgoingmessage: "Hello, jfnbdfgbfgbfgbfgbfbdfbdfbdfb"
-                            outgoingdata: "22.07.12 20:21"
-                        }
+                    Connections {
+                        target: client
 
-                        ListElement {
-                            outgoingusername: "Me"
-                            outgoingtheme: "sidneyadjvsdsdvsdv"
-                            outgoingmessage: "Hello, fgbfgb"
-                            outgoingdata: "22.07.12 20:21"
+                        onOutgoingMessageReceived: {
+                            outgoinglistModel.append({
+                                outgoingusername: recipient,
+                                outgoingtheme: theme,
+                                outgoingmessage: message,
+                                outgoingdata: data
+                            });
                         }
                     }
                 }
@@ -1147,7 +1174,6 @@ Window {
                             Layout.alignment: Qt.AlignHCenter
 
                             onClicked: {
-                                client.disconnectFromServer();
                                 view.pop();
                             }
                         }
