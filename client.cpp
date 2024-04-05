@@ -1,5 +1,4 @@
 #include <client.h>
-#include <message.h>
 #include <QHostAddress>
 #include <QDataStream>
 #include <QJsonObject>
@@ -62,8 +61,8 @@ void Client::registration(const QString &username, const QString &password)
 {
     QJsonObject json;
     json["0_action"] = "registration";
-    json["1_Username"] = username;
-    json["2_Password"] = password;
+    json["1_username"] = username;
+    json["2_password"] = password;
 
     QJsonDocument document(json);
 

@@ -1,7 +1,6 @@
 #ifndef CLIENT_H
 #define CLIENT_H
 
-#include <message.h>
 #include <QObject>
 #include <QTcpSocket>
 #include <QNetworkReply>

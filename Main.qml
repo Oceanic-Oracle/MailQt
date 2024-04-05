@@ -232,15 +232,7 @@ Window {
                     onClicked: {
                         if (textFieldUsername.text !== "" && textFieldPassword.text !== "")
                         {
-                            if (status)
-                            {
-                                client.logIn(textFieldUsername.text, textFieldPassword.text);
-                            }
-                            else
-                            {
-                                errorEnter.visible = true;
-                                errorEnter.text = "Connection error";
-                            }
+                            client.logIn(textFieldUsername.text, textFieldPassword.text);
                         }
                         else
                         {
@@ -363,8 +355,6 @@ Window {
                     buttonColorBord.color: "lightblue"
 
                     onClicked: {
-                        if (client.get_connectStatus())
-                        {
                             if (textFieldUsername.text !== "")
                             {
                                 if (textFieldPassword.text === textFieldPasswordRep.text && textFieldPassword.text !== "" &&
@@ -395,11 +385,6 @@ Window {
                             {
                                 errorNotification.text = "Enter username";
                             }
-                        }
-                        else
-                        {
-                            errorNotification.text = "";
-                        }
                     }
                 }
 
