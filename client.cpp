@@ -138,11 +138,11 @@ void Client::onSocketReadyRead()
 
         if (login == sender)
         {
-            emit incomingMessageReceived(sender, recipient, theme, message, data);
+            emit outgoingMessageReceived(sender, recipient, theme, message, data);
         }
         else
-        {
-            emit outgoingMessageReceived(sender, recipient, theme, message, data);
+        {            
+            emit incomingMessageReceived(sender, recipient, theme, message, data);
         }
     }
 }
