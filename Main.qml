@@ -693,6 +693,10 @@ Window {
                                 onClicked: {
                                     outgoinglistMessage.visible = false
                                     incominglistMessage.visible = true
+
+                                    incominglistModel.clear()
+
+                                    client.refresh(textFieldUsername.text, "incoming")
                                 }
                             }
 
@@ -707,6 +711,10 @@ Window {
                                 onClicked: {
                                     incominglistMessage.visible = false
                                     outgoinglistMessage.visible = true
+
+                                    outgoinglistModel.clear()
+
+                                    client.refresh(textFieldUsername.text, "outgoing")
                                 }
                             }
                         }
@@ -719,7 +727,6 @@ Window {
 
                         anchors.fill: parent
                         topMargin: 40
-                        ScrollBar.vertical: ScrollBar {}
 
                         model: incominglistModel
 
@@ -803,13 +810,6 @@ Window {
 
                     ListModel {
                         id: incominglistModel
-
-                        ListElement {
-                            incomingusername: "User1"
-                            incomingtheme: "fgbfgb"
-                            incomingmessage: "Hello, bfg"
-                            incomingdata: "22.07.12 20:21"
-                        }
                     }
 
                     Connections {
@@ -1160,6 +1160,9 @@ Window {
 
                             onClicked: {
                                 view.pop();
+
+                                outgoinglistModel.clear()
+                                incominglistModel.clear()
                             }
                         }
 

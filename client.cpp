@@ -85,6 +85,18 @@ void Client::logIn(const QString &username, const QString &password)
     m_socket->flush();
 }
 
+void Client::refresh(const QString &username, const QString &refresh_action)
+{
+    QJsonObject json;
+    json["0_action"]  = "refresh";
+    json["1_refresh"] = refresh_action;
+    json["2_sender"]  = username;
+
+    QJsonDocument document(json);
+    m_socket->write(document.toJson(QJsonDocument::Compact));
+    m_socket->flush();
+}
+
 void Client::onSocketConnected()
 {
     m_connected = true;
