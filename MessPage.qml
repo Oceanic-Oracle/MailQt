@@ -472,11 +472,7 @@ Page {
                         onClicked: {
                             if (toWriteText.text !== "" && themeWriteText.text !== "" && messWriteText.text !== "")
                             {
-                                client.sendMessage(textFieldUsername.text, toWriteText.text, themeWriteText.text, messWriteText.text);
-                                errorWrite.visible = false;
-                                toWriteText.clear();
-                                themeWriteText.clear();
-                                messWriteText.clear();
+                                client.sendMessage(toWriteText.text, themeWriteText.text, messWriteText.text);
                             }
                             else
                             {
@@ -500,6 +496,22 @@ Page {
 
                         font.pointSize: 13
                         font.bold: true
+                    }
+
+                    Connections {
+                        target: client
+
+                        onErrorSend:    {
+                            errorWrite.visible = true
+                            errorWrite.text = "User does not exist"
+                        }
+                        onConfirmSend:
+                        {
+                            errorWrite.visible = false;
+                            toWriteText.clear();
+                            themeWriteText.clear();
+                            messWriteText.clear();
+                        }
                     }
                 }
             }
@@ -543,6 +555,14 @@ Page {
                         buttonColorBord.color: "lightblue"
                         buttonColorText: "grey"
                         Layout.alignment: Qt.AlignHCenter
+
+                        onClicked: {
+                            toWriteText.text = textFrom.text
+                            themeWriteText.text = textTheme.text
+
+                            winMessage.visible = false
+                            writeMess.visible = true
+                        }
                     }
 
                     CustomButton {

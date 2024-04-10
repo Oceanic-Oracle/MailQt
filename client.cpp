@@ -28,11 +28,11 @@ void Client::disconnectFromServer()
     }
 }
 
-void Client::sendMessage(const QString &sender, const QString &recipient, const QString &theme, const QString &message)
+void Client::sendMessage(const QString &recipient, const QString &theme, const QString &message)
 {
     QJsonObject json;
     json["0_action"] = "message";
-    json["1_sender"] = sender;
+    json["1_sender"] = login;
     json["2_recipient"] = recipient;
     json["3_theme"] = theme;
     json["4_message"] = message;
@@ -167,19 +167,33 @@ void Client::onSocketReadyRead()
 
     else if (action == "message")
     {
-        QString sender = jsonObj["1_sender"].toString();
-        QString recipient = jsonObj["2_recipient"].toString();
-        QString theme = jsonObj["3_theme"].toString();
-        QString message = jsonObj["4_message"].toString();
-        QString data = jsonObj["5_data"].toString();
+        QString sender     = jsonObj["1_sender"].toString();
+        QString recipient  = jsonObj["2_recipient"].toString();
+        QString theme      = jsonObj["3_theme"].toString();
+        QString message    = jsonObj["4_message"].toString();
+        QString data       = jsonObj["5_data"].toString();
 
         if (login == sender)
         {
             emit outgoingMessageReceived(sender, recipient, theme, message, data);
         }
         else
-        {            
+        {
             emit incomingMessageReceived(sender, recipient, theme, message, data);
+        }
+    }
+
+    else if (action == "send_message")
+    {
+        QString result = jsonObj["1_result"].toString();
+
+        if (result == "error")
+        {
+            emit errorSend();
+        }
+        else
+        {
+            emit confirmSend();
         }
     }
 }

@@ -15,7 +15,7 @@ public slots:
     void connectToServer(const QString& ipAddress, quint16 port);
     void disconnectFromServer();
 
-    void sendMessage(const QString &sender, const QString &recipient, const QString &theme, const QString &message);
+    void sendMessage(const QString &recipient, const QString &theme, const QString &message);
     void registration(const QString &username, const QString &password);
     void logIn(const QString &username, const QString &password);
     void refresh(const QString &refresh_action);
@@ -31,6 +31,8 @@ signals:
     void registrationSuccess();
     void enterRegistError(const QString &errorMessage);
     void registrationError(const QString &errorMessage);
+    void errorSend();
+    void confirmSend();
 
 private slots:
     void onSocketConnected();
