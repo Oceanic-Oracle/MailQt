@@ -22,7 +22,7 @@ public slots:
     void sendMessage(const QString &sender, const QString &recipient, const QString &theme, const QString &message);
     void registration(const QString &username, const QString &password);
     void logIn(const QString &username, const QString &password);
-    void refresh(const QString &username, const QString &refresh_action);
+    void refresh(const QString &refresh_action);
 
 signals:
     void connectedChanged(bool connected);
