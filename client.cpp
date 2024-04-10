@@ -8,21 +8,6 @@
 
 Client::Client(QObject *parent) : QObject(parent), m_socket(nullptr), m_connected(false){connectToServer("127.0.0.1", 1234); }
 
-QString Client::get_enter()
-{
-    return enter;
-}
-
-QString Client::get_registr()
-{
-    return registr;
-}
-
-bool Client::get_connectStatus()
-{
-    return m_connected;
-}
-
 void Client::connectToServer(const QString& ipAddress, quint16 port)
 {
     if (!m_socket) {
@@ -74,15 +59,22 @@ void Client::logIn(const QString &username, const QString &password)
 {
     login = username;
 
-    QJsonObject json;
-    json["0_action"] = "login";
-    json["1_username"] = username;
-    json["2_password"] = password;
+    if (m_connected)
+    {
+        QJsonObject json;
+        json["0_action"] = "login";
+        json["1_username"] = username;
+        json["2_password"] = password;
 
-    QJsonDocument document(json);
+        QJsonDocument document(json);
 
-    m_socket->write(document.toJson(QJsonDocument::Compact));
-    m_socket->flush();
+        m_socket->write(document.toJson(QJsonDocument::Compact));
+        m_socket->flush();
+    }
+    else
+    {
+        emit serverConnect();
+    }
 }
 
 void Client::refresh(const QString &refresh_action)
@@ -95,6 +87,39 @@ void Client::refresh(const QString &refresh_action)
     QJsonDocument document(json);
     m_socket->write(document.toJson(QJsonDocument::Compact));
     m_socket->flush();
+}
+
+void Client::inputValidation(const QString &username, const QString &password, const QString &repPassword)
+{
+    if (username != "")
+    {
+        if (password != "")
+        {
+            if (password.size() >= 6)
+            {
+                if (password == repPassword)
+                {
+                    registration(username, password);
+                }
+                else
+                {
+                    emit enterRegistError("Passwords must match");
+                }
+            }
+            else
+            {
+                emit enterRegistError("Password must contain at least 6 characters");
+            }
+        }
+        else
+        {
+            emit enterRegistError("Enter password");
+        }
+    }
+    else
+    {
+        emit enterRegistError("Enter username");
+    }
 }
 
 void Client::onSocketConnected()

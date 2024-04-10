@@ -155,7 +155,11 @@ Page {
                 }
                 onLoginError: {
                     errorEnter.visible = true;
-                    errorEnter.text = enter;
+                    errorEnter.text = "Wrong login or password";
+                }
+                onServerConnect: {
+                    errorEnter.visible = true;
+                    errorEnter.text = "Connection error";
                 }
             }
 
@@ -247,36 +251,7 @@ Page {
                 buttonColorBord.color: "lightblue"
 
                 onClicked: {
-                    if (fieldUsername.text !== "")
-                    {
-                        if (fieldPassword.text === fieldPassword.text && fieldPassword.text !== "" &&
-                                fieldPasswordRep.text !== "" && fieldPassword.text.length >= 6 &&
-                                fieldPassword.text.length >= 6)
-                        {
-                            client.registration(fieldUsername.text, fieldPassword.text);
-                        }
-
-                        else if (fieldPassword.text === fieldPasswordRep.text && fieldPassword.text !== "" &&
-                                 fieldPasswordRep.text !== "")
-                        {
-                            errorNotification.text = "Password must contain at least 6 characters";
-                        }
-
-                        else if (fieldPassword.text !== fieldPasswordRep.text && fieldPassword.text !== "" &&
-                                 fieldPasswordRep.text !== "")
-                        {
-                            errorNotification.text = "Password mismatch";
-                        }
-
-                        else
-                        {
-                            errorNotification.text = "Enter password";
-                        }
-                    }
-                    else
-                    {
-                        errorNotification.text = "Enter username";
-                    }
+                    client.inputValidation(fieldUsername.text, fieldPassword.text, fieldPasswordRep.text);
                 }
             }
 
@@ -306,7 +281,11 @@ Page {
                 }
                 onRegistrationError: {
                     errorNotification.visible = true;
-                    errorNotification.text = registr;
+                    errorNotification.text = "Enter another login";
+                }
+                onEnterRegistError: {
+                    errorNotification.visible = true;
+                    errorNotification.text = errorMessage;
                 }
             }
 

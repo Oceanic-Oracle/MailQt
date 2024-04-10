@@ -11,10 +11,6 @@ class Client : public QObject
 public:
     explicit Client(QObject *parent = nullptr);
 
-    QString get_enter();
-    QString get_registr();
-    bool get_connectStatus();
-
 public slots:
     void connectToServer(const QString& ipAddress, quint16 port);
     void disconnectFromServer();
@@ -23,14 +19,17 @@ public slots:
     void registration(const QString &username, const QString &password);
     void logIn(const QString &username, const QString &password);
     void refresh(const QString &refresh_action);
+    void inputValidation(const QString &username, const QString &password, const QString &repPassword);
 
 signals:
     void connectedChanged(bool connected);
+    void serverConnect();
     void outgoingMessageReceived(const QString &sender, const QString &recipient, const QString &theme, const QString &message, const QString &data);
     void incomingMessageReceived(const QString &sender, const QString &recipient, const QString &theme, const QString &message, const QString &data);
     void loginSuccess();
     void loginError(const QString &errorMessage);
     void registrationSuccess();
+    void enterRegistError(const QString &errorMessage);
     void registrationError(const QString &errorMessage);
 
 private slots:
