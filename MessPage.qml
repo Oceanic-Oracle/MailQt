@@ -175,6 +175,8 @@ Page {
                                 textTheme.text = incomingthemeText.text
                                 textMessage.text = incomingmessageText.text
                                 textDate.text = incomingdataText.text
+
+                                fromRead.text = "From: "
                             }
                         }
                     }
@@ -281,6 +283,8 @@ Page {
                                 textTheme.text = outgoingthemeText.text
                                 textMessage.text = outgoingmessageText.text
                                 textDate.text = outgoingdataText.text
+
+                                fromRead.text = "To: "
                             }
                         }
                     }
@@ -547,6 +551,14 @@ Page {
 
                             outgoinglistModel.clear()
                             incominglistModel.clear()
+
+                            winMessage.visible = false
+                            writeMess.visible  = false
+                            errorWrite.visible = false
+
+                            toWriteText.text     = ""
+                            themeWriteText.text  = ""
+                            messWriteText.text   = ""
                         }
                     }
 
